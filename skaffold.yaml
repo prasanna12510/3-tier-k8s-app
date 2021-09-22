@@ -1,0 +1,18 @@
+apiVersion: skaffold/v2beta23
+kind: Config
+build:
+  artifacts:
+  - image: web-app
+deploy:
+  helm:
+    releases:
+    - name: web-app
+      chartPath: ./helm-chart
+      wait: true
+      artifactOverrides:
+        image: web-app
+      imageStrategy:
+          helm:
+            explicitRegistry: false
+      packaged:
+        appVersion: {{.IMAGE_TAG}}

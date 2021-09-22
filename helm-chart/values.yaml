@@ -1,0 +1,81 @@
+nameOverride: ""
+fullnameOverride: ""
+
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/prasanna12510/web-app
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+env : {}
+
+imagePullSecrets:
+  - name: dockerconfigjson-github-com
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: NodePort
+  name: http
+  port: 5000
+  targetPort: 5000
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+liveness:
+  httpGet:
+    path: /
+    port: http
+  timeoutSeconds: 30
+  periodSeconds: 10
+  failureThreshold: 3
+  initialDelaySeconds: 60
+
+readiness:
+  httpGet:
+    path: /
+    port: http
+  timeoutSeconds: 30
+  periodSeconds: 10
+  failureThreshold: 3
+  initialDelaySeconds: 60
+
+disruptionBudget:
+  minAvailable: 1
+
+volumeMounts: []
+
+volumes: []
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

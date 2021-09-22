@@ -1,0 +1,36 @@
+name: web-app-deploy
+on:
+  push:
+    branches: '**'
+    tags:
+      - web-app-*
+    paths:
+      - "web-app/**"
+      - "helm-chart//**"
+
+jobs:
+  web-app-build:
+    name: Publish - GitHub Container Registry
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login docker
+        run : make docker-login
+        env :
+          DOCKER_TOKEN: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
+          DOCKER_USERNAME: ${{ secrets.REPOSITORY_ACCESS_USER }}
+
+      - name: Build docker image
+        run : |
+          export GITHUB_SHA_SHORT=`sed -e 's/^"//' -e 's/"$//' <<<"$MASTER_COMMIT_ID" | cut -c1-7`
+          echo "APP_TAG=$(echo $GITHUB_SHA_SHORT)" >> $GITHUB_ENV
+          make docker-build
+        env:
+          MASTER_COMMIT_ID: ${{ toJson(github.sha) }}
+
+      - name: Push docker image to github container Registry
+        run : |
+          make docker-retag-push
+        env:
+          DOCKER_USERNAME: ${{ secrets.REPOSITORY_ACCESS_USER }}
+          DOCKER_REPO: web-app

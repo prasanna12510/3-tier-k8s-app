@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <title>WordCount - Counted</title>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{{ url_for('home') }}">WordCount App</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+         <div class="jumbotron text-center">
+             <h2>Counted</h2>
+             <a href="{{ url_for('home') }}">Count New Word</a>
+
+             <hr>
+
+             <h2>Your text</h2>
+             {{ fulltext }}
+
+             <hr>
+
+             <h2>Words Count</h2>
+             total words = {{ words }}
+
+             <hr>
+
+             <div class="d-inline-flex p-2 bd-highlight justify-content-center">
+             <ul class="list-group">
+             {% for word,value in worddisc %}
+                 <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ word }}
+                    <span class="badge badge-primary badge-pill">{{ value }}</span>
+                 </li>
+             {% endfor %}
+             </ul>
+             </div>
+             <table class="data" border="1" style="width: 100%; margin-top: 20px; text-align: center;">
+                 <tr>
+                   <th colspan="3">Past Activity of Users</th>
+                   </tr>
+                   <tr>
+                     <td>Sr.No.</td>
+                     <td>Word_Count</td>
+                     <td>Content</td>
+                   </tr>
+
+                   <!-- The user_data is a variable containing all the user data from the DB. -->
+
+                   {% for user in user_data %}
+                   <tr>
+                     <td>{{user._id}}</td>
+                     <td>{{user.word_count}}</td>
+                     <td>{{user.content}}</td>
+                   </tr>
+                   {% endfor %}
+
+              </table>
+
+         </div>
+
+
+     </div>
+
+
+
+     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</body>
+</html>
